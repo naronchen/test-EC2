@@ -1,0 +1,34 @@
+name: deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    deploy:
+        name: deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: checkout
+              uses: actions/checkout@v3
+
+            - name: setupSSH
+              run: |
+                mkdir -p ~/.ssh
+                echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+                chmod 600 ~/.ssh/id_rsa
+                echo "$HOST $USER" > ~/.ssh/config
+                StrictHostKeyChecking no" >> ~/.ssh/config
+              env:
+                HOST: ${{ secrets.HOST }}
+                USER: ${{ secrets.USER }}
+
+            - name: Deploy to EC2
+              run: |
+                ssh -o StrictHostKeyChecking=no $USER@$HOST 'bash -s' < ./deploy_script.sh
+              env:
+                HOST: ${{ secrets.HOST }}
+                USER: ${{ secrets.USER }}
+
+        
