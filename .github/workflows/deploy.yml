@@ -18,8 +18,7 @@ jobs:
                 mkdir -p ~/.ssh
                 echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
                 chmod 600 ~/.ssh/id_rsa
-                echo "$HOST $USER" > ~/.ssh/config
-                StrictHostKeyChecking no" >> ~/.ssh/config
+                echo -e "Host ${{ secrets.HOST }}\n  User ${{ secrets.USER }}\n  StrictHostKeyChecking no" > ~/.ssh/config
               env:
                 HOST: ${{ secrets.HOST }}
                 USER: ${{ secrets.USER }}
