@@ -18,16 +18,21 @@ jobs:
                 mkdir -p ~/.ssh
                 echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
                 chmod 600 ~/.ssh/id_rsa
-                echo -e "Host ${{ secrets.HOST }}\n  User ${{ secrets.USER }}\n  StrictHostKeyChecking no" > ~/.ssh/config
+                ssh-keyscan ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+              env:
+                HOST: ${{ secrets.HOST }}
+            
+            - name: Transfer files to EC2
+              run: |
+                rsync -avz --delete ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/html/
               env:
                 HOST: ${{ secrets.HOST }}
                 USER: ${{ secrets.USER }}
 
-            - name: Deploy to EC2
-              run: |
-                ssh -o StrictHostKeyChecking=no $USER@$HOST 'bash -s' < ./deploy_script.sh
-              env:
-                HOST: ${{ secrets.HOST }}
-                USER: ${{ secrets.USER }}
+            # - name: Restart Nginx (Optional)
+            #   run: ssh ${{ secrets.USER }}@${{ secrets.HOST }} 'sudo systemctl restart nginx'
+            #   env:
+            #     HOST: ${{ secrets.HOST }}
+            #     USER: ${{ secrets.USER }}
 
         
