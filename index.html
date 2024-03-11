@@ -1,11 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Virtual Time Capsule</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .container { margin-bottom: 10px; }
+        .inline-container { display: flex; align-items: center; }
+        .inline-container > * { margin-right: 10px; } /* Spacing between inline elements */
+        label { display: block; margin-bottom: 5px; }
+        button { margin-top: 20px; }
+    </style>
 </head>
 <body>
-    <h1>virtual time capsule</h1>
+    <h1>Virtual Time Capsule</h1>
+    <div class="container">
+        <label for="letter">Your Letter:</label>
+        <textarea id="letter" name="letter" rows="4" cols="50"></textarea>
+    </div>
+    <div class="container">
+        <label for="email">Your Email Address:</label>
+        <input type="email" id="email" name="email">
+    </div>
+    <div class="container inline-container">
+        <div>
+            <label for="quantity">Quantity:</label>
+            <input type="number" id="quantity" name="quantity" min="1">
+        </div>
+        <div>
+            <label for="unit">Unit of Time:</label>
+            <select id="unit" name="unit">
+                <option value="minute">Minute</option>
+                <option value="hour">Hour</option>
+                <option value="day">Day</option>
+                <option value="week">Week</option>
+                <option value="year">Year</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit">Send</button>
 </body>
 </html>
