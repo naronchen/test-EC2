@@ -35,4 +35,15 @@ jobs:
             #     HOST: ${{ secrets.HOST }}
             #     USER: ${{ secrets.USER }}
 
+            - name: Install dependencies and Restart Express app
+              run: |
+                ssh ${{ secrets.USER }}@${{ secrets.HOST }} <<EOF
+                  cd /var/www/html/my-express-app
+                  npm install
+                  pm2 restart all || pm2 start app.js --name my-express-app
+                EOF
+              env:
+                HOST: ${{ secrets.HOST }}
+                USER: ${{ secrets.USER }}
+
         

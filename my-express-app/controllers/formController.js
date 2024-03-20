@@ -1,4 +1,5 @@
 const { createClient } = require('@supabase/supabase-js');
+const path = require('path');
 
 // Supabase client initialization
 const supabaseUrl = process.env.SUPABASE_URL;
