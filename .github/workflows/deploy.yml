@@ -24,7 +24,7 @@ jobs:
             
             - name: Transfer files to EC2
               run: |
-                rsync -avz --delete ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/html/
+                rsync -avz --delete --exclude "lambda/" ./ ${{ secrets.USER }}@${{ secrets.HOST }}:/var/www/html/
               env:
                 HOST: ${{ secrets.HOST }}
                 USER: ${{ secrets.USER }}

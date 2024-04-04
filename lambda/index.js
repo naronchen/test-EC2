@@ -42,17 +42,30 @@ exports.handler = async (event) => {
         try {
             await ses.sendEmail(params).promise();
             console.log(`Email sent to ${email}`);
+
+            // delete the email from the database
+            const {data, error} = await supabase
+                .from('emails')
+                .delete()
+                .match({email, letter});
+            if (error) {
+                console.error(`Error deleting email to ${email}:`, error);
+            }
+            
         } catch (sendError) {
             console.error(`Error sending email to ${email}:`, sendError);
         }
     }
+
+
     return {
         statusCode: 200,
         body: JSON.stringify(data),
     };
 };
 
-(async () => {
-    const response = await exports.handler();
-    console.log(response.body);
-})();
+// For testing locally
+// (async () => {
+//     const response = await exports.handler();
+//     console.log(response.body);
+// })();
